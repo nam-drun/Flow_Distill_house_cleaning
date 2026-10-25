@@ -88,7 +88,7 @@ In [Flow Matching recap](https://github.com/nam-drun/Flow_plus_Distribution-Matc
 \end{align*}
 ```
 
-This expression very much only concerns 1 sampling step segment from $`\hat{X}_{t_k}^{Solver, B} \to \hat{X}_{t_{k+1}}^{Solver, B}`$ for any Runge-Kutta method. Note, different methods lead to different $`p^{th}`$ solvers which has different NFE. Knowing that $`x := X_0`$, this expression describes about the 1st sampling step. Now, if you specialise this expression for Euler solver (1st order Runge-Kutta), this expression would become:
+This expression very much only concerns 1 sampling step segment from $`\hat{X}_{t_k}^{Solver, B} \to \hat{X}_{t_{k+1}}^{Solver, B}`$ for any Runge-Kutta method. Note, different methods lead to different $`p^{th}`$ solvers which has different NFE. Knowing that $`x := X_0`$, this expression describes about the 1st sampling step. Now, if you specialise this expression for Euler solver (1st order Runge-Kutta), $`I = 1`$, $`a_{11} = 0`$, $`b_1 = 1`$. So this expression would become:
 ```math
 \begin{align*}
 & \nu_1 = x + h f(\nu_1), \\
