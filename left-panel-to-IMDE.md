@@ -88,4 +88,4 @@ In [Flow Matching recap](https://github.com/nam-drun/Flow_plus_Distribution-Matc
 \end{align*}
 ```
 
-This expression very much only concerns 1 sampling step segment from $`\hat{X}_{t_k}^{Euler, B} \to \hat{X}_{t_{k+1}}^{Euler, B}`$ under different Runge-Kutta $`p^{th}`$-orders (NFE). Knowing that $`x := X_0`$, this expression describes about the 1st sampling step.
+This expression very much only concerns 1 sampling step segment from $`\hat{X}_{t_k}^{Euler, B} \to \hat{X}_{t_{k+1}}^{Euler, B}`$ for any Runge-Kutta method. Note, different methods lead to different $`p^{th}`$ solvers which has different NFE. Knowing that $`x := X_0`$, this expression describes about the 1st sampling step.
