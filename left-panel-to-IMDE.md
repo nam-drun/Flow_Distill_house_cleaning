@@ -79,5 +79,5 @@ Plug $`\left\| X_t^P - X_t \right\|`$ back to the RHS of $`\left\| v_P(t, X_t^P)
 
 At this point, it is clear that IMDE paper with Gronwall's inequality won't have us deriving $`v_P(t, X_t^P)`$ exactly. So what is the remedy?
 
-# Approximating Perturbed Velocity at small step size
+# Approximating Perturbed velocity field at small step size
 
