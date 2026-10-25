@@ -3,11 +3,11 @@ Current SOTA in image generation is MDP + post-train with RLHF. For example, see
 - Pretrained Flow Matching is much more compute efficient than pretrained MDP.
 - Post-trained Flow is more compute efficient than pretrained Flow by an order of magnitude.
 - MDP and Flow Matching are only remotely related (in theory) via Hamilton-Bellman-Jacobi <-> Hamilton-Jacobi <-> Wasserstein, where only MDP is compatible with RLHF in image generation (see [DDPO paper](https://arxiv.org/abs/2305.13301)).
-  
-The questions are:
-- Can post-trained Flow be even further optimised?
-- Can MDP + RLHF (e.g., [Flow-GRPO paper](https://arxiv.org/abs/2505.05470)) be more compute efficient than post-trained Flow?
-- Can a practical common feat between MDP and Flow Matching be founded?
+
+Moreover, despite not learning Inverse-Modified velocity field explicitly (see [IMDE paper](https://arxiv.org/abs/2206.07335)), we find that post-trained Flow could achieve what Inverse-Modified velocity field (velocity of Perturbed Continuous) is intended to achieve, and has the same tradeoff as Inverse-Modified velocity field. Practically, the only characteristic that distinguish post-trained Flow from Inverse-Modified velocity field is that more post-training epochs do not translate to leveraging discretisation error. So, the questions are:
+- Should we post-train Flow explicitly on Inverse-Modified velocity field?
+- Is post-trained compute efficient than MDP + RLHF for image generation?
+- Is this a common feat between MDP and Flow Matching?
 
 ***We think that all these questions tie back to how post-trained Flow models leverage discretisation error to get better quality image (see left panel in the picture below)!!*** 
 
