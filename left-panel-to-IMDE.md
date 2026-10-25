@@ -83,9 +83,15 @@ At this point, it is clear that IMDE paper with Gronwall's inequality won't have
 In [Flow Matching recap](https://github.com/nam-drun/Flow_plus_Distribution-Matching-loss/blob/main/README.md#flow-matching-recap), we said that as number of sampling steps $`N \to \infty`$, $`\sum_{k=0}^{N-1} v(t, X_{t_k}) \approx \int_0^1 v(s, X_s) ds`$. In other words, as number of size step approaches 0, Base Euler becomes from approximately identical to Base Continuous $`\to`$ literally identical to Base Continuous. IMDE paper has similar expressions, too:
 ```math
 \begin{align*}
-& v_i = x + h \sum_{j=1}^I a_{ij} f(v_j), \\
-& \Phi_h(x) = x + h \sum_{i=1}^I b_i f(v_i)
+& \nu_i = x + h \sum_{j=1}^I a_{ij} f(\nu_j), \\
+& \Phi_h(x) = x + h \sum_{i=1}^I b_i f(\nu_i)
 \end{align*}
 ```
 
-This expression very much only concerns 1 sampling step segment from $`\hat{X}_{t_k}^{Euler, B} \to \hat{X}_{t_{k+1}}^{Euler, B}`$ for any Runge-Kutta method. Note, different methods lead to different $`p^{th}`$ solvers which has different NFE. Knowing that $`x := X_0`$, this expression describes about the 1st sampling step.
+This expression very much only concerns 1 sampling step segment from $`\hat{X}_{t_k}^{Solver, B} \to \hat{X}_{t_{k+1}}^{Solver, B}`$ for any Runge-Kutta method. Note, different methods lead to different $`p^{th}`$ solvers which has different NFE. Knowing that $`x := X_0`$, this expression describes about the 1st sampling step. Now, if you specialise this expression for Euler solver (1st order Runge-Kutta), this expression would become:
+```math
+\begin{align*}
+& \nu_1 = x + h f(\nu_1), \\
+& \Phi_h(x) = x + h b_1 f(\nu_1) \implies \Phi_h(x) = x + h f(x)
+\end{align*}
+```
