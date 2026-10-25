@@ -87,3 +87,5 @@ In [Flow Matching recap](https://github.com/nam-drun/Flow_plus_Distribution-Matc
 & \Phi_h(x) = x + h \sum_{i=1}^I b_i f(v_i)
 \end{align*}
 ```
+
+This expression very much only concerns 1 sampling step segment from $`\hat{X}_{t_k}^{Euler, B} \to \hat{X}_{t_{k+1}}^{Euler, B}`$ under different Runge-Kutta $`p^{th}`$-orders (NFE). Knowing that $`x := X_0`$, this expression describes about the 1st sampling step.
