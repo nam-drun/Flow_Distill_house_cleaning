@@ -84,6 +84,6 @@ In [Flow Matching recap](https://github.com/nam-drun/Flow_plus_Distribution-Matc
 ```math
 \begin{align*}
 & v_i = x + h \sum_{j=1}^I a_{ij} f(v_j), \\
-& \Phi_h(x) = x + h \sum_{j=1}^I b_i f(v_i)
+& \Phi_h(x) = x + h \sum_{i=1}^I b_i f(v_i)
 \end{align*}
 ```
