@@ -92,7 +92,7 @@ This expression very much only concerns 1 sampling step segment from $`\hat{X}_{
 ```math
 \begin{align*}
 & \nu_1 = x + h f(\nu_1), \\
-& \Phi_h(x) = x + h b_1 f(\nu_1) \implies \Phi_h(x) = x + h f(x)
+& \Phi_{h,f}(x) = x + h b_1 f(\nu_1) \implies \Phi_{h,f}(x) = x + h f(x)
 \end{align*}
 ```
 
