@@ -95,3 +95,5 @@ This expression very much only concerns 1 sampling step segment from $`\hat{X}_{
 & \Phi_h(x) = x + h b_1 f(\nu_1) \implies \Phi_h(x) = x + h f(x)
 \end{align*}
 ```
+
+Here, $`\Phi_h(x) = x + h f(x)`$ literally reads as *next position = current position + time x velocity*, with *current position* $`:=X_0`$
