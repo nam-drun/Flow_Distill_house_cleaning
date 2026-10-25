@@ -80,7 +80,7 @@ Plug $`\left\| X_t^P - X_t \right\|`$ back to the RHS of $`\left\| v_P(t, X_t^P)
 At this point, it is clear that IMDE paper with Gronwall's inequality won't have us deriving $`v_P(t, X_t^P)`$ exactly. So what is the remedy?
 
 # Approximating Perturbed velocity field at small step size
-In [Flow Matching recap](https://github.com/nam-drun/Flow_plus_Distribution-Matching-loss/blob/main/README.md#flow-matching-recap), we said that as number of sampling steps $`N \to \infty`$, $`\sum_{k=0}^{N-1} v(t, X_{t_k}) \approx \int_0^1 v(s, X_s) ds`$. In other words, as number of size step approaches 0, Base Euler becomes identical to Base Continuous. IMDE paper has similar expressions, too:
+In [Flow Matching recap](https://github.com/nam-drun/Flow_plus_Distribution-Matching-loss/blob/main/README.md#flow-matching-recap), we said that as number of sampling steps $`N \to \infty`$, $`\sum_{k=0}^{N-1} v(t, X_{t_k}) \approx \int_0^1 v(s, X_s) ds`$. In other words, as number of size step approaches 0, Base Euler becomes from approximately identical to Base Continuous $`\to`$ literally identical to Base Continuous. IMDE paper has similar expressions, too:
 ```math
 \begin{align*}
 & v_i = x + h \sum_{j=1}^I a_{ij} f(v_j), \\
