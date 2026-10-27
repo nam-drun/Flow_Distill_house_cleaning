@@ -29,7 +29,7 @@ In the picture below, we show how Flow Matching works using Base Continuous $X_t
 , whether this is practically useful or not is questionable. Side note, modern diffusion are distinguished from classical diffusion by using score or denoiser term to derive velocity field to treat the entirety of sampling process as transport (recall the *next position = current position + velocity x time*). Whereas if you look at diffusion in the early days, either they use MCMC (Langevin dynamics) during sampling, see page 4 in ([Yang Song-Kingma 2021 paper](https://arxiv.org/abs/2101.03288)); or they use mean and covariance to treat sampling as a sequence of Gaussian transitions.
 
 
-# How to leverage discretisation error, instead of fighting it
+# Leverage discretisation error instead of fighting it
 Given some pretrained velocity field $v_B(t, x)$, it is not a surprise that during post-training, distribution matching loss perturbs $v_B(t, x)$. This means that for the same start point $X_0$, $v_P(t, x)$ will transport $X_0$ along some different trajectory (Perturbed Continuous) to arrive a different endpoint. Assume that $v_B(t, x)$ and $v_P(t, x)$ are perfectly learned, respectively. 
 > You can learn a perturbed velocity field that belongs to some ***specific*** Perturbed Continuous trajectory, such that its Perturbed Euler can recover $X_1$ exactly (see the left panel in the picture below).
 
