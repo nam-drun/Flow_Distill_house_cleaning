@@ -98,8 +98,7 @@ This expression very much only concerns 1 sampling step segment from $`\hat{X}_{
 
 Here, $`\Phi_{h,f}(x) = x + h f(x)`$ literally reads as *next position = current position + time x velocity*, with *current position* $`:= X_0`$. The added-on subscript $`f`$ is just to distinguish between $`\Phi_{h,f}(x) = x + h f(x)`$ vs $`\Phi_{h,f_h}(x) = x + h f_h(x)`$ (i.e., Base Euler vs Perturbed Euler). Now, IMDE paper has this expression: 
 ```math
-\begin{align*}
-& \left( \Phi_{h, f_h}\right)^S(x) = (\phi_{h,f})^S(x) = \phi_{Sh,f}(x)\\
-& \text{With } S = 1: \Phi_{h, f_h}(x) = \phi_{h,f}(x)
-\end{align*}
+\left( \Phi_{h, f_h}\right)^S(x) = (\phi_{h,f})^S(x) = \phi_{Sh,f}(x)
 ```
+
+Here, $`(\phi_{h,f})^S(x) = \phi_{Sh,f}(x)`$ means that you have the whole Base Continuous trajectory $`\phi_{Sh,f}(x)`$ (i.e., conditional probability path) and you chop up that trajectory into $`S`$ segments, hence $`(\phi_{h,f})^S(x)`$. For example, for the left panel, $`S = 4`$ so just you chop up Base Continuous into 4 segments. That Base Continuous is still the same trajectory, just that now it has 4 segments. Given that there are 4 segments, there are now 5 nodes (including $`X_0`$), which you can see in the left panel. Now, $`\left( \Phi_{h, f_h}\right)^S(x) = (\phi_{h,f})^S(x)`$ simply means that every node of Perturbed Euler matches with every node of Base Continuous. For example in the left panel, $`\hat{X}_{0.25}^{Euler, B} = X_{0.25}`$; same rule applies for $`X_{0.50}`$, $`X_{0.75}`$ and $`X_1`$.
