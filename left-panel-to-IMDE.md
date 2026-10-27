@@ -77,9 +77,9 @@ Plug $`\left\| X_t^P - X_t \right\|`$ back to the RHS of $`\left\| v_P(t, X_t^P)
 \left\| v_P(t, X_t^P) - v_B(t, X_t) \right\| \le h^p \left[g(t) + L_p(t) \int_0^t \exp \left(\int_s^t L_P(r) dr \right) g(s)ds \right]
 ```
 
-At this point, it is clear that IMDE paper with Gronwall's inequality won't have us deriving $`v_P(t, X_t^P)`$ exactly. So what is the remedy?
+At this point, it is clear that IMDE theorem 3.2 with Gronwall's inequality won't have us derive $`v_P(t, X_t^P)`$ exactly, not even if we add-on Alekseev-Grobner formula from [Benton paper](https://openreview.net/forum?id=uqQPyWFDhY). So what is the remedy?
 
-# Approximating Perturbed velocity field at small step size
+# Approximate Perturbed velocity field at small step size
 In [Flow Matching recap](https://github.com/nam-drun/Flow_plus_Distribution-Matching-loss/blob/main/README.md#flow-matching-recap), we said that as number of sampling steps $`N \to \infty`$, $`\sum_{k=0}^{N-1} v(t, X_{t_k}) \approx \int_0^1 v(s, X_s) ds`$. In other words, as number of size step approaches 0, Base Euler becomes from approximately identical to Base Continuous $`\to`$ literally identical to Base Continuous. IMDE paper has similar expressions, too:
 ```math
 \begin{align*}
@@ -96,4 +96,10 @@ This expression very much only concerns 1 sampling step segment from $`\hat{X}_{
 \end{align*}
 ```
 
-Here, $`\Phi_{h,f}(x) = x + h f(x)`$ literally reads as *next position = current position + time x velocity*, with *current position* $`:= X_0`$. The added-on subscript $`f`$ is just to distinguish between $`\Phi_{h,f}(x) = x + h f(x)`$ vs $`\Phi_{h,f_h}(x) = x + h f_h(x)`$ (i.e., Base Euler vs Perturbed Euler).
+Here, $`\Phi_{h,f}(x) = x + h f(x)`$ literally reads as *next position = current position + time x velocity*, with *current position* $`:= X_0`$. The added-on subscript $`f`$ is just to distinguish between $`\Phi_{h,f}(x) = x + h f(x)`$ vs $`\Phi_{h,f_h}(x) = x + h f_h(x)`$ (i.e., Base Euler vs Perturbed Euler). Now, IMDE paper has this expression: 
+```math
+\begin{align*}
+& \left( \Phi_{h, f_h}\right)^S(x) = (\phi_{h,f})^S(x) = \phi_{Sh,f}(x)\\
+& \text{Set } S = 1: \Phi_{h, f_h}(x) = \phi_{h,f}(x)
+\end{align*}
+```
