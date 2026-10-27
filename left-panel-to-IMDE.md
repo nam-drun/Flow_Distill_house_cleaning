@@ -96,4 +96,4 @@ This expression very much only concerns 1 sampling step segment from $`\hat{X}_{
 \end{align*}
 ```
 
-Here, $`\Phi_h(x) = x + h f(x)`$ literally reads as *next position = current position + time x velocity*, with *current position* $`:=X_0`$
+Here, $`\Phi_{h,f}(x) = x + h f(x)`$ literally reads as *next position = current position + time x velocity*, with *current position* $`:= X_0`$. The added-on subscript $`f`$ is just to distinguish between $`\Phi_{h,f}(x) = x + h f(x)`$ vs $`\Phi_{h,f_h}(x) = x + h f_h(x)`$ (i.e., Base Euler vs Perturbed Euler).
