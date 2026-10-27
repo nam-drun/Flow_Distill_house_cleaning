@@ -100,6 +100,6 @@ Here, $`\Phi_{h,f}(x) = x + h f(x)`$ literally reads as *next position = current
 ```math
 \begin{align*}
 & \left( \Phi_{h, f_h}\right)^S(x) = (\phi_{h,f})^S(x) = \phi_{Sh,f}(x)\\
-& \text{Set } S = 1: \Phi_{h, f_h}(x) = \phi_{h,f}(x)
+& \text{With } S = 1: \Phi_{h, f_h}(x) = \phi_{h,f}(x)
 \end{align*}
 ```
