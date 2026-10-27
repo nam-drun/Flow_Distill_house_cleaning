@@ -1,14 +1,14 @@
-| Left panel                            | [IMDE paper](https://arxiv.org/abs/2206.07335) | Meaning                                           | How to access them during training/sampling                        |
-| ------------------------------------  | -----------------------------------------------| --------------------------------------------------|------------------------------------------------------------------- | 
-| N                                     | S                                              | number of sampling steps. $h$ is time interval    | $\frac1N = \Delta t = h$                                           | 
-| $X_0$                                 | $x$                                            | start point                                       | $X_0 \sim \mathcal{N}(0, I_d)$                                     |
-| $X_1$                                 | $\phi_{Sh,f}(x)$                               | Base Continuous end point. $Sh$ is time interval  | $X_0 + \int_0^1 v(s, X_s) ds$. $Sh$ is time interval               |
-| $v_B(t, x)$                           | $f$                                            | Base velocity field                               | $`v_B(t, x) \approx \dot{X}_t`$                                    |
-| $v_P(t, x)$                           | $f_h$                                          | Perturbed velocity field                          | $`v_P(t, x) = v_B(t, x) + \Delta \theta`$. $\theta$ is NN weight   |
-| $`\hat{X}_1^{Euler, B}`$              | $(\Phi_{h,f})^S(x)$                            | Base Euler end point.                             | $`\hat{X}_1^{Euler, B} = \Delta t \sum_{k=0}^{N-1} v_B(t_k, x)`$   |
-| $`\hat{X}_1^{Euler, P}`$              | $(\Phi_{h,f_h})^S(x)$                          | Perturbed Euler end point                         | $`\hat{X}_1^{Euler, P} = \Delta t \sum_{k=0}^{N-1} v_P(t_k, x)`$   |
-| $`e_B^{disc}`$                        | $(\Phi_{h,f})^S(x) - \phi_{Sh,f}(x)$           | discretisation error at $t=1$ of Base model       | $`e_B^{disc} = \hat{X}_1^{Euler, B} - X_1`$                        |
-| $`d_N`$                               | $(\Phi_{h,f_h})^S(x) - (\Phi_{h,f})^S(x)$      | discretisation error counteraction at $t=1$       | $`d_N = \hat{X}_1^{Euler, P} - \hat{X}_1^{Euler, B}`$              |
+| Left panel                                                  | [IMDE paper](https://arxiv.org/abs/2206.07335) | How to access them during training/sampling                                      |
+| ----------------------------------------------------------- | -----------------------------------------------|--------------------------------------------------------------------------------- | 
+| Number of sampling steps $`N`$                              | S                                              | $`\frac1N = \Delta t = h`$                                                       | 
+| Start point $`X_0`$                                         | $x$                                            | $X_0 := Z \sim \mathcal{N}(0, I_d)$                                              |
+| Base Continuous trajectory                                  | $\phi_{Sh,f}(x)$                               | $X_t = \alpha_t X_0 + \beta_t X_1 \forall t \in [0,1]$                           |
+| Base velocity field $v_B(t, x)$                             | $f$                                            | $`v_B(t, x) \approx \dot{X}_t`$                                                  |
+| Perturbed velocity field $v_P(t, x)$                        | $f_h$                                          |                                                                                  |
+| Base Euler sampling trajectory                              | $(\Phi_{h,f})^S(x)$                            | $`\hat{X}_{t_{N-1}}^{Euler, B} = X_0 + \Delta t \sum_{k=0}^{N-1} v_B(t_k, x)`$   |
+| Perturbed Euler sampling trajectory                         | $(\Phi_{h,f_h})^S(x)$                          | $`\hat{X}_{t_{N-1}}^{Euler, P} = X_0 + \Delta t \sum_{k=0}^{N-1} v_P(t_k, x)`$   |
+| End point discretisation error of Base model $`e_B^{disc}`$ | $(\Phi_{h,f})^S(x) - \phi_{Sh,f}(x)$           | $`e_B^{disc} = \hat{X}_1^{Euler, B} - X_1`$                                      |
+| End point discretisation error counteraction $d_N$          | $(\Phi_{h,f_h})^S(x) - (\Phi_{h,f})^S(x)$      | $`d_N = \hat{X}_1^{Euler, P} - \hat{X}_1^{Euler, B}`$                            |
 
 # What to get out from IMDE paper
 We want to quantify the relationship between $`v_P(t, X_t^P)`$ and $`v_B(t, X_t)`$. So that we can verify on whether distribution matching loss makes learned velocity field getting closer to $`v_P(t, X_t^P)`$. Here, the left panel also displays our challenge: We don't really know Perturbed Continuous trajectory $`X_t^P`$ really is, so we can't derive $`v_P(t, X_t^P)`$ like how Flow Matching typically does it. Fortunately, theorem 3.2 in IMDE paper can help us quantify $`v_P(t, X_t^P) - v_B(t, X_t)`$, so that if we know $`v_B(t, X_t)`$, then we can derive $`v_B(t, X_t)`$.
