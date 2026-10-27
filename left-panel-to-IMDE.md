@@ -1,14 +1,14 @@
-| Left panel                                                  | [IMDE paper](https://arxiv.org/abs/2206.07335) | How to access them during training/sampling                                      |
-| ----------------------------------------------------------- | -----------------------------------------------|--------------------------------------------------------------------------------- | 
-| Number of sampling steps $`N`$                              | S                                              | $`\frac1N = \Delta t = h`$                                                       | 
-| Start point $`X_0`$                                         | $x$                                            | $X_0 := Z \sim \mathcal{N}(0, I_d)$                                              |
-| Base Continuous trajectory                                  | $\phi_{Sh,f}(x)$                               | $X_t = \alpha_t X_0 + \beta_t X_1 \forall t \in [0,1]$                           |
-| Base velocity field $v_B(t, x)$                             | $f$                                            | $`v_B(t, x) \approx \dot{X}_t`$                                                  |
-| Perturbed velocity field $v_P(t, x)$                        | $f_h$                                          |                                                                                  |
-| Base Euler sampling trajectory                              | $(\Phi_{h,f})^S(x)$                            | $`\hat{X}_{t_{N-1}}^{Euler, B} = X_0 + \Delta t \sum_{k=0}^{N-1} v_B(t_k, x)`$   |
-| Perturbed Euler sampling trajectory                         | $(\Phi_{h,f_h})^S(x)$                          | $`\hat{X}_{t_{N-1}}^{Euler, P} = X_0 + \Delta t \sum_{k=0}^{N-1} v_P(t_k, x)`$   |
-| End point discretisation error of Base model $`e_B^{disc}`$ | $(\Phi_{h,f})^S(x) - \phi_{Sh,f}(x)$           | $`e_B^{disc} = \hat{X}_1^{Euler, B} - X_1`$                                      |
-| End point discretisation error counteraction $d_N$          | $(\Phi_{h,f_h})^S(x) - (\Phi_{h,f})^S(x)$      | $`d_N = \hat{X}_1^{Euler, P} - \hat{X}_1^{Euler, B}`$                            |
+| Left panel                                                  | [IMDE paper](https://arxiv.org/abs/2206.07335) | How to access them during training/sampling                 |
+| ----------------------------------------------------------- | -----------------------------------------------|-------------------------------------------------------------| 
+| Number of sampling steps $`N`$                              | S                                              | $`\frac1N = \Delta t = h`$                                  | 
+| Start point $`X_0`$                                         | $x$                                            | $X_0 := Z \sim \mathcal{N}(0, I_d)$                         |
+| Base Continuous trajectory                                  | $\phi_{Sh,f}(x)$                               | $X_t = \alpha_t X_0 + \beta_t X_1 \forall t \in [0,1]$      |
+| Base velocity field $v_B(t, x)$                             | $f$                                            | $`v_B(t, x) \approx \dot{X}_t`$                             |
+| Perturbed velocity field $v_P(t, x)$                        | $f_h$                                          |                                                             |
+| Base Euler sampling trajectory                              | $(\Phi_{h,f})^S(x)$                            | $`X_0 + \Delta t \sum_{k=0}^{N-1} v_B(t_k, x)`$             |
+| Perturbed Euler sampling trajectory                         | $(\Phi_{h,f_h})^S(x)$                          | $`X_0 + \Delta t \sum_{k=0}^{N-1} v_P(t_k, x)`$             |
+| End point discretisation error of Base model $`e_B^{disc}`$ | $(\Phi_{h,f})^S(x) - \phi_{Sh,f}(x)$           | $`e_B^{disc} = \hat{X}_1^{Euler, B} - X_1`$                 |
+| End point discretisation error counteraction $d_N$          | $(\Phi_{h,f_h})^S(x) - (\Phi_{h,f})^S(x)$      | $`d_N = \hat{X}_1^{Euler, P} - \hat{X}_1^{Euler, B}`$       |
 
 # What to get out from IMDE paper
 We want to quantify the relationship between $`v_P(t, X_t^P)`$ and $`v_B(t, X_t)`$. So that we can verify on whether distribution matching loss makes learned velocity field getting closer to $`v_P(t, X_t^P)`$. Here, the left panel also displays our challenge: We don't really know Perturbed Continuous trajectory $`X_t^P`$ really is, so we can't derive $`v_P(t, X_t^P)`$ like how Flow Matching typically does it. Fortunately, theorem 3.2 in IMDE paper can help us quantify $`v_P(t, X_t^P) - v_B(t, X_t)`$, so that if we know $`v_B(t, X_t)`$, then we can derive $`v_B(t, X_t)`$.
@@ -88,7 +88,7 @@ In [Flow Matching recap](https://github.com/nam-drun/Flow_plus_Distribution-Matc
 \end{align*}
 ```
 
-This expression very much only concerns 1 sampling step segment from $`\hat{X}_{t_k}^{Solver, B} \to \hat{X}_{t_{k+1}}^{Solver, B}`$ for any Runge-Kutta method. Note, different methods lead to different $`p^{th}`$ solvers which has different NFE. Knowing that $`x := X_0`$, this expression describes about the 1st sampling step. Now, if you specialise this expression for Euler solver (1st order Runge-Kutta), $`I = 1`$, $`a_{11} = 0`$, $`b_1 = 1`$. So this expression would become:
+This expression very much only concerns 1 sampling step segment from $`\hat{X}_{t_k}^{Solver, B} \to \hat{X}_{t_{k+1}}^{Solver, B}`$ for any Runge-Kutta method. Note, different methods lead to different $`p^{th}`$ solvers which has different NFE. Knowing that $`x := X_0`$ in IMDE paper (not in Flow Matching), this expression describes about the 1st sampling step. Now, if you specialise this expression for Euler solver (1st order Runge-Kutta), $`I = 1`$, $`a_{11} = 0`$, $`b_1 = 1`$. So this expression would become:
 ```math
 \begin{align*}
 & \nu_1 = x + h f(\nu_1), \\
@@ -96,11 +96,24 @@ This expression very much only concerns 1 sampling step segment from $`\hat{X}_{
 \end{align*}
 ```
 
-Here, $`\Phi_{h,f}(x) = x + h f(x)`$ literally reads as *next position = current position + time interval x velocity*, with *current position* $`:= X_0`$. The added-on subscript $`f`$ is just to distinguish between $`\Phi_{h,f}(x) = x + h f(x)`$ vs $`\Phi_{h,f_h}(x) = x + h f_h(x)`$ (i.e., Base Euler vs Perturbed Euler). Now, IMDE paper has this expression: 
+Here, $`\Phi_{h,f}(x) = x + h f(x)`$ literally reads as *next position = current position + time interval x velocity*. The added-on subscript $`f`$ is just to distinguish between $`\Phi_{h,f}(x) = x + h f(x)`$ vs $`\Phi_{h,f_h}(x) = x + h f_h(x)`$ (i.e., Base Euler vs Perturbed Euler). Now, IMDE paper has this equality: 
 ```math
 \left( \Phi_{h, f_h}\right)^S(x) = (\phi_{h,f})^S(x) = \phi_{Sh,f}(x)
 ```
 
-Here, $`(\phi_{h,f})^S(x) = \phi_{Sh,f}(x)`$ means that you have the whole Base Continuous trajectory $`\phi_{Sh,f}(x)`$ (i.e., conditional probability path) and you chop up that trajectory into $`S`$ segments, hence $`(\phi_{h,f})^S(x)`$. For example, for the left panel, $`S = 4`$ so just you chop up Base Continuous into 4 segments. That Base Continuous is still the same trajectory, just that now it has 4 segments. Given that there are 4 segments, there are now 5 nodes (including $`X_0`$), which you can see in the left panel. Now, $`\left( \Phi_{h, f_h}\right)^S(x) = (\phi_{h,f})^S(x)`$ simply means that every node of Perturbed Euler matches with every node of Base Continuous. For example in the left panel, $`\hat{X}_{0.25}^{Euler, B} = X_{0.25}`$; same rule applies for $`X_{0.50}`$, $`X_{0.75}`$ and $`X_1`$. Note, in Flow Matching, the final time (on paper) is always $`t = 1`$. Thus, $`Sh = 1`$ so if `S` changes, then `h` also needs to change. Same rule still applies even if $`t = 0.97`$ (or any other value in practice).
+Here, $`(\phi_{h,f})^S(x) = \phi_{Sh,f}(x)`$ means that you have the whole Base Continuous trajectory $`\phi_{Sh,f}(x)`$ (i.e., conditional probability path) and you chop up that trajectory into $`S`$ segments, hence $`(\phi_{h,f})^S(x)`$. For example, for the left panel, $`S = 4`$ so just you chop up Base Continuous into 4 segments. That Base Continuous is still the same trajectory, just that now it has 4 segments. Given that there are 4 segments, there are now 5 nodes (including $`X_0`$), which you can see in the left panel. Now, $`\left( \Phi_{h, f_h}\right)^S(x) = (\phi_{h,f})^S(x)`$ simply means that every node of Perturbed Euler matches with every node of Base Continuous. For example in the left panel, $`\hat{X}_{0.25}^{Euler, B} = X_{0.25}`$; same rule applies for $`X_{0.50}`$, $`X_{0.75}`$ and $`X_1`$. Note, in Flow Matching, the final time (on paper) is always $`t = 1`$. Thus, $`Sh = 1`$ so if `S` changes, then `h` also needs to change. Same rule still applies even if $`t = 0.97`$ (or any other value in practice). So again, the $`\left( \Phi_{h, f_h}\right)^S(x) = (\phi_{h,f})^S(x)`$ equality is not a fact, but rather what we desire to happen!
 
-Now, we are interested in a scenario where $`S = 1`$. Not because we want Perturbed Euler to only have 1 sampling step. But because we are only interested in what happens going from *current position* to *next position* when *time interval* is infinitesimally small. Earlier in [Flow Matching recap](https://github.com/nam-drun/Flow_plus_Distribution-Matching-loss/blob/main/README.md#flow-matching-recap), we had established that as $`\Delta t \to 0`$, $`\sum_{k=0}^{N-1} v(t, X_{t_k}) \to \int_0^1 v(s, X_s) ds`$.  
+Now, we are interested in what happens going from *current position* to *next position* in Perturbed Euler. In other words, we are only interested in $`\Phi^{t \to t + h}_{h, f_h}(X_t)`$. Therefore, the $`\left( \Phi_{h, f_h}\right)^S(x) = (\phi_{h,f})^S(x)`$ equality becomes:
+```math
+\begin{align*}
+& \Phi^{t \to t + h}_{h, f_h}(X_t) = \phi^{t \to t + h}_{h,f}(X_t) \\
+\end{align*}
+```
+
+And $`\Phi_{h,f}(x) = x + h f(x)`$ becomes:
+```math
+\Phi^{t \to t + h}_{h, f_h}(x) = X_t + h f_h(X_t)
+```
+
+
+Earlier in [Flow Matching recap](https://github.com/nam-drun/Flow_plus_Distribution-Matching-loss/blob/main/README.md#flow-matching-recap), we had established that as $`\Delta t \to 0`$, $`\sum_{k=0}^{N-1} v(t, X_{t_k}) \to \int_0^1 v(s, X_s) ds`$.  
