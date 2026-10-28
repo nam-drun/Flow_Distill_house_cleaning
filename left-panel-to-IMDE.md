@@ -1,14 +1,14 @@
-| Left panel                                                  | [IMDE paper](https://arxiv.org/abs/2206.07335) | How to access them during training/sampling                 |
-| ----------------------------------------------------------- | -----------------------------------------------|-------------------------------------------------------------| 
-| Number of sampling steps $`N`$                              | S                                              | $`\frac1N = \Delta t = h`$                                  | 
-| Start point $`X_0`$                                         | $x$                                            | $X_0 := Z \sim \mathcal{N}(0, I_d)$                         |
-| Base Continuous trajectory                                  | $\phi_{Sh,f}(x)$                               | $X_t = \alpha_t X_0 + \beta_t X_1 \forall t \in [0,1]$      |
-| Base velocity field $v_B(t, x)$                             | $f$                                            | $`v_B(t, x) \approx \dot{X}_t`$                             |
-| Perturbed velocity field $v_P(t, x)$                        | $f_h$                                          |                                                             |
-| Base Euler sampling trajectory                              | $(\Phi_{h,f})^S(x)$                            | $`X_0 + \Delta t \sum_{k=0}^{N-1} v_B(t_k, x)`$             |
-| Perturbed Euler sampling trajectory                         | $(\Phi_{h,f_h})^S(x)$                          | $`X_0 + \Delta t \sum_{k=0}^{N-1} v_P(t_k, x)`$             |
-| End point discretisation error of Base model $`e_B^{disc}`$ | $(\Phi_{h,f})^S(x) - \phi_{Sh,f}(x)$           | $`e_B^{disc} = \hat{X}_1^{Euler, B} - X_1`$                 |
-| End point discretisation error counteraction $d_N$          | $(\Phi_{h,f_h})^S(x) - (\Phi_{h,f})^S(x)$      | $`d_N = \hat{X}_1^{Euler, P} - \hat{X}_1^{Euler, B}`$       |
+| Left panel                                                  | [IMDE paper](https://arxiv.org/abs/2206.07335) | How they are used during training, sampling                                               |
+| ----------------------------------------------------------- | -----------------------------------------------|-------------------------------------------------------------------------------------------| 
+| Number of sampling steps $`N`$                              | S                                              | $`\frac1N = \Delta t = h`$                                                                | 
+| Start point $`X_0`$                                         | $x$                                            | $X_0 := Z \sim \mathcal{N}(0, I_d)$                                                       |
+| Base Continuous trajectory                                  | $\phi_{Sh,f}(x)$                               | $X_t = \alpha_t X_0 + \beta_t X_1 \forall t \in [0,1]$ or $X_t = \int_0^t v(s, X_s) ds$   |
+| Base velocity field $v_B(t, x)$                             | $f$                                            | $`v_B(t, x) \approx \dot{X}_t`$                                                           |
+| Perturbed velocity field $v_P(t, x)$                        | $f_h$                                          |                                                                                           |
+| Base Euler sampling trajectory                              | $(\Phi_{h,f})^S(x)$                            | $`X_0 + \Delta t \sum_{k=0}^{N-1} v_B(t_k, x)`$                                           |
+| Perturbed Euler sampling trajectory                         | $(\Phi_{h,f_h})^S(x)$                          | $`X_0 + \Delta t \sum_{k=0}^{N-1} v_P(t_k, x)`$                                           |
+| End point discretisation error of Base model $`e_B^{disc}`$ | $(\Phi_{h,f})^S(x) - \phi_{Sh,f}(x)$           | $`e_B^{disc} = \hat{X}_1^{Euler, B} - X_1`$                                               |
+| End point discretisation error counteraction $d_N$          | $(\Phi_{h,f_h})^S(x) - (\Phi_{h,f})^S(x)$      | $`d_N = \hat{X}_1^{Euler, P} - \hat{X}_1^{Euler, B}`$                                     |
 
 # What to get out from IMDE paper
 We want to quantify the relationship between $`v_P(t, X_t^P)`$ and $`v_B(t, X_t)`$. So that we can verify on whether distribution matching loss makes learned velocity field getting closer to $`v_P(t, X_t^P)`$. Here, the left panel also displays our challenge: We don't really know Perturbed Continuous trajectory $`X_t^P`$ really is, so we can't derive $`v_P(t, X_t^P)`$ like how Flow Matching typically does it. Fortunately, theorem 3.2 in IMDE paper can help us quantify $`v_P(t, X_t^P) - v_B(t, X_t)`$, so that if we know $`v_B(t, X_t)`$, then we can derive $`v_B(t, X_t)`$.
@@ -80,7 +80,7 @@ Plug $`\left\| X_t^P - X_t \right\|`$ back to the RHS of $`\left\| v_P(t, X_t^P)
 At this point, it is clear that IMDE theorem 3.2 with Gronwall's inequality won't have us derive $`v_P(t, X_t^P)`$ exactly, not even if we add-on Alekseev-Grobner formula from [Benton paper](https://openreview.net/forum?id=uqQPyWFDhY). So what is the remedy?
 
 # Approximate Perturbed velocity field at small step size
-In [Flow Matching recap](https://github.com/nam-drun/Flow_plus_Distribution-Matching-loss/blob/main/README.md#flow-matching-recap), we said that as number of sampling steps $`N \to \infty`$, $`\sum_{k=0}^{N-1} v(t, X_{t_k}) \approx \int_0^1 v(s, X_s) ds`$. In other words, as number of size step approaches 0, Base Euler becomes from approximately identical to Base Continuous $`\to`$ literally identical to Base Continuous. IMDE paper has similar expressions, too:
+In [Flow Matching recap](https://github.com/nam-drun/Flow_plus_Distribution-Matching-loss/blob/main/README.md#flow-matching-recap), we said that as number of sampling steps $`N \to \infty`$, $`\sum_{k=0}^{N-1} v(t, X_{t_k}) \approx \int_0^1 v(t, X_t) dt`$. In other words, as number of size step approaches 0, Base Euler becomes from approximately identical to Base Continuous $`\to`$ literally identical to Base Continuous. IMDE paper has similar expressions, too:
 ```math
 \begin{align*}
 & \nu_i = x + h \sum_{j=1}^I a_{ij} f(\nu_j), \\
