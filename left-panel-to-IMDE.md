@@ -13,7 +13,7 @@
 # Goal
 For each $`v_B(t, X_t)`$, we want to know its corresponding $`v_P(t, X_t^P)`.
 
-Ideally, we want Perturbed Euler to match Base Continuous at every sampling time step $`t_k`$. Take left panel for example, where $`N = 4`$, this means that $`X_{0.25} = \hat{X}_{t_1}^{B, Euler}`$, $`X_{0.5} = \hat{X}_{t_2}^{B, Euler}`$, and so on. Therefore, we can compute $`v_P(0.25, X_{0.25}) = \frac{X_{0.50} - X_{0.25}}/{0.25}`$. Same rule applies for $`v_P(0, X_{0})`$, $`v_P(0.5, X_{0.5})`$, and so on. Essentially, the formula is that $`v_P(t, X_t) = \frac{X_{t + \Delta t} - X_t}}/{\Delta t}`$.
+Ideally, we want Perturbed Euler to match Base Continuous at every sampling time step $`t_k`$. Take left panel for example, where $`N = 4`$, this means that $`X_{0.25} = \hat{X}_{t_1}^{B, Euler}`$, $`X_{0.5} = \hat{X}_{t_2}^{B, Euler}`$, and so on. Therefore, we can compute $`v_P(0.25, X_{0.25}) = \frac{X_{0.50} - X_{0.25}}/{0.25}`$. Same rule applies for $`v_P(0, X_0)`$, $`v_P(0.5, X_{0.5})`$, and so on. Essentially, the formula is that $`v_P(t, X_t) = \frac{X_{t + \Delta t} - X_t}}/{\Delta t}`$.
 
 # IMDE theorem 3.2 + Gronwall's inequality (R.I.P)
 Now, the first expression in theorem 3.2 is:
