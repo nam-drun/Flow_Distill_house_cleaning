@@ -29,6 +29,9 @@ From Lipschitz regularity assumption on $`v_P(t,x)`$ and the notion that $`v_P(t
 
 # Sampling algorithm for Perturbed velocity field
 
+
+# What happens if we use different integration solver
+
 # IMDE theorem 3.2 + Gronwall's inequality (R.I.P)
 Now, the first expression in theorem 3.2 is:
 ```math
