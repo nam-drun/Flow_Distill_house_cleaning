@@ -21,7 +21,7 @@ So what if we don't have access to $`v_P(t, X_t^P)`$? After all, $`v_P(t, X_t^P)
 
 Formally, consider Lipschitz regularity assumption on $v_B(t, X_t)$: $`\left\| v_B(t, X_t^P) - v_B(t, X_t) \right\| \le L(t) \left\| X_t^P - X_t \right\|`$. Note, if you feel confused about this statement, just read it as $`\left\| v_B(t, x + c) - v_B(t, x) \right\| \le L(t) \left\| (x + c) - x \right\|`$ with $`x \in X_t`$ and $`(x + c) \in X_t^P`$; then when I add $`c \to 0`$, this statement is now the 1st principle of differentiation on $`v_B(t, x)`$. In other words, as $`c \to 0`$, $`L(t)`$ literally becomes the slope of $`v_B(t, x)`$. Anyway, section 3.2 in [Error Bounds for Flow Matching Methods paper](https://openreview.net/forum?id=uqQPyWFDhY) shown that this Lipschitz regularity assumption is generally true.
 
-We evoke Lipschitz regularity assumption on $v_P(t, X_t)$: $`\left\| v_P(t, X_t^P) - v_P(t, X_t) \right\| \le L(t)_P \left\| X_t^P - X_t \right\|`$. Here, the difference between the two Lipschitz assumptions is just the Lipschitz constant.
+We evoke Lipschitz regularity assumption on $v_P(t, X_t)$: $`\left\| v_P(t, X_t^P) - v_P(t, X_t) \right\| \le L(t)_P \left\| X_t^P - X_t \right\|`$. Here, the difference between the twos assumptions is just the Lipschitz constant.
 
 
 
