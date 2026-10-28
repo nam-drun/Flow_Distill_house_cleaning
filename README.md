@@ -32,7 +32,7 @@ In the picture below, we show how Flow Matching works using Base Continuous $X_t
 
 # Baseline for experiments
 
-In JiT, the widely assumed manifold hypothesis is used under the basis that "clean images" often lie on a low-dimensional manifold on a high ambient space. The experiments follow a $R^{d}$ ambient space where clean data lies on a low-dimensional 2D manifold of dimension, following the toy setup in JiT.
+Following JiT, we adopt the manifold hypothesis, which posits that clean images concentrate near a low-dimensional manifold embedded in a high-dimensional ambient space. Building upon JiT's two-dimensional toy setting, we construct a multimodal distribution supported on a nonlinear manifold of intrinsic dimension 170 embedded in \(\mathbb{R}^d\). Unlike the original linear embedding, our construction preserves full-rank ambient covariance while maintaining low intrinsic dimensionality. (Chat gpt nailed the writing, but this needs to be refined. WILL DO IT, will look into "intrinsic dimension" term, ie, how JiT states "clean" images are just low dim manifold with noise on top of it)
 
 # Leverage discretisation error instead of fighting it
 
