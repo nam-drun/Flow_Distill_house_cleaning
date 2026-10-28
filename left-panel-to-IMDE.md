@@ -24,6 +24,11 @@ Formally, consider Lipschitz regularity assumption on $v_B(t, X_t)$: $`\left\| v
 From Lipschitz regularity assumption on $`v_P(t,x)`$ and the notion that $`v_P(t, X_t^P)`$ and $`v_P(t, X_t)`$ both belong to $`v_P(t,x)`$, we conjecture that if provided sufficient amount of regression signal $`v_P(t, X_t)`$, the neural network can learn to generalise to $`v_P(t, X_t^P)`$. It's literally the statement as saying "provided sufficient amount of regression signal $`v_B(t, X_t)`$, the neural network can learn to generalise to $`v_B(t, X_t^P)`$. Therefore, it is entirely valid to say that it doesn't make a difference whether we regress toward $`v_P(t, X_t)`$ or $`v_P(t, X_t^P)`$ during post-training. And given that we actually have access to $`v_P(t, X_t)`$, why not pursue it instead.
 
 
+# Loss function for Perturbed velocity field
+
+
+# Sampling algorithm for Perturbed velocity field
+
 # IMDE theorem 3.2 + Gronwall's inequality (R.I.P)
 Now, the first expression in theorem 3.2 is:
 ```math
