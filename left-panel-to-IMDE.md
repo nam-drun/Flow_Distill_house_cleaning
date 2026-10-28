@@ -1,18 +1,19 @@
-| Left panel                                                  | [IMDE paper](https://arxiv.org/abs/2206.07335) | How they are used during training, sampling                                               |
-| ----------------------------------------------------------- | -----------------------------------------------|-------------------------------------------------------------------------------------------| 
-| Number of sampling steps $`N`$                              | S                                              | $`\frac1N = \Delta t = h`$                                                                | 
-| Start point $`X_0`$                                         | $x$                                            | $X_0 := Z \sim \mathcal{N}(0, I_d)$                                                       |
-| Base Continuous trajectory                                  | $\phi_{Sh,f}(x)$                               | $X_t = \alpha_t X_0 + \beta_t X_1 \forall t \in [0,1]$ or $X_t = \int_0^t v(s, X_s) ds$   |
-| Base velocity field $v_B(t, x)$                             | $f$                                            | $`v_B(t, x) \approx \dot{X}_t`$                                                           |
-| Perturbed velocity field $v_P(t, x)$                        | $f_h$                                          |                                                                                           |
-| Base Euler sampling trajectory                              | $(\Phi_{h,f})^S(x)$                            | $`X_0 + \Delta t \sum_{k=0}^{N-1} v_B(t_k, x)`$                                           |
-| Perturbed Euler sampling trajectory                         | $(\Phi_{h,f_h})^S(x)$                          | $`X_0 + \Delta t \sum_{k=0}^{N-1} v_P(t_k, x)`$                                           |
-| End point discretisation error of Base model $`e_B^{disc}`$ | $(\Phi_{h,f})^S(x) - \phi_{Sh,f}(x)$           | $`e_B^{disc} = \hat{X}_1^{Euler, B} - X_1`$                                               |
-| End point discretisation error counteraction $d_N$          | $(\Phi_{h,f_h})^S(x) - (\Phi_{h,f})^S(x)$      | $`d_N = \hat{X}_1^{Euler, P} - \hat{X}_1^{Euler, B}`$                                     |
+| Left panel                                                  | [IMDE paper](https://arxiv.org/abs/2206.07335) | How they are used during training, sampling                                                     |
+| ----------------------------------------------------------- | -----------------------------------------------|-------------------------------------------------------------------------------------------------| 
+| Number of sampling steps $`N`$                              | S                                              | $`\frac1N = \Delta t = h`$                                                                      | 
+| Start point $`X_0`$                                         | $x$                                            | $`X_0 := Z \sim \mathcal{N}(0, I_d)`$                                                           |
+| Base Continuous trajectory                                  | $\phi_{Sh,f}(x)$. $Sh = 1$                     | $`X_t = \alpha_t X_0 + \beta_t X_1 \forall t \in [0,1] = X_0 + \int_0^t v(s, X_s) ds`$          |
+| Base velocity field $v_B(t, x)$                             | $f$                                            | $`v_B(t, x) \approx \dot{X}_t`$                                                                 |
+| Perturbed velocity field $v_P(t, x)$                        | $f_h$                                          |                                                                                                 |
+| Base Euler sampling trajectory $`\hat{X}_{t_k}^{B, Euler}`$ | $(\Phi_{h,f})^S(x)$                            | $`\hat{X}_{t_k}^{B, Euler} = X_0 + \Delta t \sum_{k=0}^{N-1} v_B(t_k, x)`$. $t_k \Delta t = t$  |
+| Perturbed Euler $`\hat{X}_{t_k}^{P, Euler}`$                | $(\Phi_{h,f_h})^S(x)$                          | $`\hat{X}_{t_k}^{P, Euler} = X_0 + \Delta t \sum_{k=0}^{N-1} v_P(t_k, x)`$.                     |
+| End point discretisation error of Base model $`e_B^{disc}`$ | $(\Phi_{h,f})^S(x) - \phi_{Sh,f}(x)$           | $`e_B^{disc} = \hat{X}_1^{Euler, B} - X_1`$                                                     |
+| End point discretisation error counteraction $d_N$          | $(\Phi_{h,f_h})^S(x) - (\Phi_{h,f})^S(x)$      | $`d_N = \hat{X}_{t_N}^{Euler, P} - \hat{X}_{t_N}^{Euler, B}`$                                   |
 
-# What to get out from IMDE paper
-We want to quantify the relationship between $`v_P(t, X_t^P)`$ and $`v_B(t, X_t)`$. So that we can verify on whether distribution matching loss makes learned velocity field getting closer to $`v_P(t, X_t^P)`$. Here, the left panel also displays our challenge: We don't really know Perturbed Continuous trajectory $`X_t^P`$ really is, so we can't derive $`v_P(t, X_t^P)`$ like how Flow Matching typically does it. Fortunately, theorem 3.2 in IMDE paper can help us quantify $`v_P(t, X_t^P) - v_B(t, X_t)`$, so that if we know $`v_B(t, X_t)`$, then we can derive $`v_B(t, X_t)`$.
+# Goal
+For each $`v_B(t, X_t)`$, we want to know its corresponding $`v_P(t, X_t^P)`.
 
+Ideally, we want Perturbed Euler to match Base Continuous at every sampling time step $t_k$. Take left panel for example, where $N = 4$, this means that $`X_{0.25} = \hat{X}_{t_1}^{B, Euler}`$, $`X_{0.5} = \hat{X}_{t_2}^{B, Euler}`$, and so on. Therefore, we can compute $`v_P(0.25, X_{0.25}) = \frac{X_{0.50} - X_{0.25}}/{0.25}`$. Same rule applies for $`v_P(0, X_{0})`$, $`v_P(0.5, X_{0.5})`$, and so on. Essentially, the formula is that $`v_P(t, X_t) = \frac{X_{t + \Delta t} - X_t}}/{\Delta t}`$.
 
 # IMDE theorem 3.2 + Gronwall's inequality (R.I.P)
 Now, the first expression in theorem 3.2 is:
