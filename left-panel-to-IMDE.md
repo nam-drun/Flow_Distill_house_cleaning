@@ -91,43 +91,4 @@ Plug $`\left\| X_t^P - X_t \right\|`$ back to the RHS of $`\left\| v_P(t, X_t^P)
 \left\| v_P(t, X_t^P) - v_B(t, X_t) \right\| \le h^p \left[g(t) + L_p(t) \int_0^t \exp \left(\int_s^t L_P(r) dr \right) g(s)ds \right]
 ```
 
-At this point, it is clear that IMDE theorem 3.2 with Gronwall's inequality won't have us derive $`v_P(t, X_t^P)`$ exactly, not even if we add-on Alekseev-Grobner formula from [Benton paper](https://openreview.net/forum?id=uqQPyWFDhY). So what is the remedy?
-
-# Approximate Perturbed velocity field at small step size
-In [Flow Matching recap](https://github.com/nam-drun/Flow_plus_Distribution-Matching-loss/blob/main/README.md#flow-matching-recap), we said that as number of sampling steps $`N \to \infty`$, $`\sum_{k=0}^{N-1} v(t, X_{t_k}) \approx \int_0^1 v(t, X_t) dt`$. In other words, as number of size step approaches 0, Base Euler becomes from approximately identical to Base Continuous $`\to`$ literally identical to Base Continuous. IMDE paper has similar expressions, too:
-```math
-\begin{align*}
-& \nu_i = x + h \sum_{j=1}^I a_{ij} f(\nu_j), \\
-& \Phi_h(x) = x + h \sum_{i=1}^I b_i f(\nu_i)
-\end{align*}
-```
-
-This expression very much only concerns 1 sampling step segment from $`\hat{X}_{t_k}^{Solver, B} \to \hat{X}_{t_{k+1}}^{Solver, B}`$ for any Runge-Kutta method. Note, different methods lead to different $`p^{th}`$ solvers which has different NFE. Knowing that $`x := X_0`$ in IMDE paper (not in Flow Matching), this expression describes about the 1st sampling step. Now, if you specialise this expression for Euler solver (1st order Runge-Kutta), $`I = 1`$, $`a_{11} = 0`$, $`b_1 = 1`$. So this expression would become:
-```math
-\begin{align*}
-& \nu_1 = x + h f(\nu_1), \\
-& \Phi_{h,f}(x) = x + h b_1 f(\nu_1) \implies \Phi_{h,f}(x) = x + h f(x)
-\end{align*}
-```
-
-Here, $`\Phi_{h,f}(x) = x + h f(x)`$ literally reads as *next position = current position + time interval x velocity*. The added-on subscript $`f`$ is just to distinguish between $`\Phi_{h,f}(x) = x + h f(x)`$ vs $`\Phi_{h,f_h}(x) = x + h f_h(x)`$ (i.e., Base Euler vs Perturbed Euler). Now, IMDE paper has this equality: 
-```math
-\left( \Phi_{h, f_h}\right)^S(x) = (\phi_{h,f})^S(x) = \phi_{Sh,f}(x)
-```
-
-Here, $`(\phi_{h,f})^S(x) = \phi_{Sh,f}(x)`$ means that you have the whole Base Continuous trajectory $`\phi_{Sh,f}(x)`$ (i.e., conditional probability path) and you chop up that trajectory into $`S`$ segments, hence $`(\phi_{h,f})^S(x)`$. For example, for the left panel, $`S = 4`$ so just you chop up Base Continuous into 4 segments. That Base Continuous is still the same trajectory, just that now it has 4 segments. Given that there are 4 segments, there are now 5 nodes (including $`X_0`$), which you can see in the left panel. Now, $`\left( \Phi_{h, f_h}\right)^S(x) = (\phi_{h,f})^S(x)`$ simply means that every node of Perturbed Euler matches with every node of Base Continuous. For example in the left panel, $`\hat{X}_{0.25}^{Euler, B} = X_{0.25}`$; same rule applies for $`X_{0.50}`$, $`X_{0.75}`$ and $`X_1`$. Note, in Flow Matching, the final time (on paper) is always $`t = 1`$. Thus, $`Sh = 1`$ so if `S` changes, then `h` also needs to change. Same rule still applies even if $`t = 0.97`$ (or any other value in practice). So again, the $`\left( \Phi_{h, f_h}\right)^S(x) = (\phi_{h,f})^S(x)`$ equality is not a fact, but rather what we desire to happen!
-
-Now, we are interested in what happens going from *current position* to *next position* in Perturbed Euler. In other words, we are only interested in $`\Phi^{t \to t + h}_{h, f_h}(X_t)`$. Therefore, the $`\left( \Phi_{h, f_h}\right)^S(x) = (\phi_{h,f})^S(x)`$ equality becomes:
-```math
-\begin{align*}
-& \Phi^{t \to t + h}_{h, f_h}(X_t) = \phi^{t \to t + h}_{h,f}(X_t) \\
-\end{align*}
-```
-
-And $`\Phi_{h,f}(x) = x + h f(x)`$ becomes:
-```math
-\Phi^{t \to t + h}_{h, f_h}(x) = X_t + h f_h(X_t)
-```
-
-
-Earlier in [Flow Matching recap](https://github.com/nam-drun/Flow_plus_Distribution-Matching-loss/blob/main/README.md#flow-matching-recap), we had established that as $`\Delta t \to 0`$, $`\sum_{k=0}^{N-1} v(t, X_{t_k}) \to \int_0^1 v(s, X_s) ds`$.  
+At this point, it is clear that IMDE theorem 3.2 with Gronwall's inequality won't have us derive $`v_P(t, X_t^P)`$ exactly, not even if we add-on Alekseev-Grobner formula from [Benton paper](https://openreview.net/forum?id=uqQPyWFDhY).
