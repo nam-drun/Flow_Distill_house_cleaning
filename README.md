@@ -30,10 +30,6 @@ In the picture below, we show how Flow Matching works using Base Continuous $X_t
 
 , whether this is practically useful or not is questionable. Side note, modern diffusion are distinguished from classical diffusion by using score or denoiser term to derive velocity field to treat the entirety of sampling process as transport (recall the *next position = current position + velocity x time*). Whereas if you look at diffusion in the early days, either they use MCMC (Langevin dynamics) during sampling, see page 4 in ([Yang Song-Kingma 2021 paper](https://arxiv.org/abs/2101.03288)); or they use mean and covariance to treat sampling as a sequence of Gaussian transitions.
 
-# Baseline for experiments
-
-Following JiT, we adopt the manifold hypothesis, which posits that clean images concentrate near a low-dimensional manifold embedded in a high-dimensional ambient space. Building upon JiT's two-dimensional toy setting, we construct a multimodal distribution supported on a nonlinear manifold of intrinsic dimension 170 embedded in \(\mathbb{R}^d\). Unlike the original linear embedding, our construction preserves full-rank ambient covariance while maintaining low intrinsic dimensionality. (Chat gpt nailed the writing, but this needs to be refined. WILL DO IT, will look into "intrinsic dimension" term, ie, how JiT states "clean" images are just low dim manifold with noise on top of it)
-
 # Leverage discretisation error instead of fighting it
 
 Given some pretrained velocity field $v_B(t, x)$, it is not a surprise that during post-training, distribution matching loss perturbs $v_B(t, x)$. This means that for the same start point $X_0$, $v_P(t, x)$ will transport $X_0$ along some different trajectory (Perturbed Continuous) to arrive a different endpoint. Assume that $v_B(t, x)$ and $v_P(t, x)$ are perfectly learned, respectively.
