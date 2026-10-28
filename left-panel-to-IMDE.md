@@ -15,6 +15,16 @@ For each $`v_B(t, X_t)`$, we want to know its corresponding $`v_P(t, X_t^P)`$. B
 
 Ideally, we want Perturbed Euler to match Base Continuous at every sampling time step $`t_k`$. Take left panel for example, where $`N = 4`$, this means that $`X_{0.25} = \hat{X}_{t_1}^{B, Euler}`$, $`X_{0.5} = \hat{X}_{t_2}^{B, Euler}`$, and so on. Therefore, we can compute $`v_P(0.25, X_{0.25}) = \frac{X_{0.50} - X_{0.25}}{0.25}`$. Same rule applies for $`v_P(0, X_0)`$, $`v_P(0.5, X_{0.5})`$, and so on. Essentially, the formula is that $`v_P(t, X_t) = \frac{X_{t + \Delta t} - X_t}{\Delta t}`$. But $`v_P(t, X_t)`$ is not yet $`v_P(t, X_t^P)`$.
 
+
+# Compromised goal
+So what if we don't have access to $`v_P(t, X_t^P)`$? After all, $`v_P(t, X_t^P)`$ and $`v_P(t, X_t)`$ belong to the same Perturbed velocity field $`v_P(t,x)`$. Furthermore, given that we intent to treat post-training Flow Matching as another Flow Matching problem, but we regress toward $`v_P(t, x)`$ instead of $`v_B(t, x)`$. This means that we can evoke Lipschitz regularity assumption on $v_P(t, x)$ the same way Lipschitz regularity assumption had been invoked for $v_B(t, x)$. 
+
+Formally, consider Lipschitz regularity assumption on $v_B(t, X_t)$: $`\left\| v_B(t, X_t^P) - v_B(t, X_t) \right\| \le L(t) \left\| X_t^P - X_t \right\|`$. Note, if you feel confused about this statement, just read it as $`\left\| v_B(t, x + c) - v_B(t, x) \right\| \le L(t) \left\| (x + c) - x \right\|`$ with $`x \in X_t`$ and $`(x + c) \in X_t^P`$; then when I add $`c \to 0`$, this statement is now the 1st principle of differentiation on $`v_B(t, x)`$. In other words, as $`c \to 0`$, $`L(t)`$ literally becomes the slope of $`v_B(t, x)`$. Anyway, section 3.2 in [Error Bounds for Flow Matching Methods paper](https://openreview.net/forum?id=uqQPyWFDhY) shown that this Lipschitz regularity assumption is generally true.
+
+We evoke Lipschitz regularity assumption on $v_P(t, X_t)$: $`\left\| v_P(t, X_t^P) - v_P(t, X_t) \right\| \le L(t)_P \left\| X_t^P - X_t \right\|`$. Here, the difference between the two Lipschitz assumptions is just the Lipschitz constant.
+
+
+
 # IMDE theorem 3.2 + Gronwall's inequality (R.I.P)
 Now, the first expression in theorem 3.2 is:
 ```math
@@ -41,10 +51,6 @@ where $`r_h(t,x) = f_{p+1} + h f_{p+2} + h^2 f_{p+3} + \cdots`$. Although this i
 & v_P(t, X_t^P) - v_B(t, X_t) = v_P(t, X_t^P) - v_P(t, X_t) -h^p \delta_{v_B}(t,x) + h^{p+1}r_h(t,x)
 \end{align*}
 ```
-
-Here, we invoke the Lipschitz regularity assumption on $v_B(t, X_t)$: $`\left\| v_B(t, X_t^P) - v_B(t, X_t) \right\| \le L(t) \left\| X_t^P - X_t \right\|`$. Note, if you feel confused about this statement, just read it as $`\left\| v_B(t, x + c) - v_B(t, x) \right\| \le L(t) \left\| (x + c) - x \right\|`$ with $`x \in X_t`$ and $`(x + c) \in X_t^P`$; then when I add $`c \to 0`$, this statement now reads like 1st principle of differentiation on $`v_B(t, x)`$. In other words, as $`c \to 0`$, $`L(t)`$ quite literally becomes the slope of $`v_B(t, x)`$. Anyway, this assumption generally holds true in Flow Matching, as shown by section 3.2 in [Error Bounds for Flow Matching Methods paper](https://openreview.net/forum?id=uqQPyWFDhY). 
-
-Now we introduce another Lipschitz regularity assumption on $v_P(t,x)$: $`\left\| v_P(t, X_t^P) - v_P(t, X_t) \right\| \le L(t)_P \left\| X_t^P - X_t \right\|`$. Because this assumption comes out of nowhere so let's try to justify it: The core tenet of Flow Matching is that the ODE continuous trajectory $`X_t`$ needs to transport $X_0 \to X_1$. Whereas the core tenet of IMDE paper is that each continuous trajectory $`X_t`$ is explicitly linked to a corresponding perturbed continuous trajectory $`X_t^P`$. From initial experiments with post-trained Flow model, we observe that when the number of sampling steps during pretraining and post-training is $`[1, 4]`$, we observe that the post-trained models consistently have less discretisation compared to pretrained models. This is especially true for Euler solver. Thus, in term of Frechet distance and Wasserstein-2 distance, post-trained $P_1$ is closer to data distribution than pretrained $`P_1`$. At the very least, that seems to suggest that for every Base Continuous, there exists a set of corresponding Perturbed Continuous trajectories somewhere in $`\mathbb{R}^d`$ such that its Perturbed Euler's endpoint is closer to ideal $X_1$ than Base Euler's endpoint. 
 
 With this Lipschitz regularity assumption on $v_P(t,x)$, we can bound $`v_P(t, X_t^P) - v_B(t, X_t)`$ as follows:
 ```math
