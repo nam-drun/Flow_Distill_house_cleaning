@@ -1,12 +1,12 @@
 | Left panel                                                  | [IMDE paper](https://arxiv.org/abs/2206.07335) | How they are used during training, sampling                                                     |
 | ----------------------------------------------------------- | -----------------------------------------------|-------------------------------------------------------------------------------------------------| 
-| Number of sampling steps $`N`$                              | S                                              | $`\frac1N = \Delta t = h`$                                                                      | 
+| Number of sampling steps $`N`$, where $`t_k \Delta t = t`$  | S                                              | $`\frac1N = \Delta t = h`$                                                                      | 
 | Start point $`X_0`$                                         | $x$                                            | $`X_0 := Z \sim \mathcal{N}(0, I_d)`$                                                           |
-| Base Continuous trajectory                                  | $\phi_{Sh,f}(x)$. $Sh = 1$                     | $`X_t = \alpha_t X_0 + \beta_t X_1 \forall t \in [0,1] = X_0 + \int_0^t v(s, X_s) ds`$          |
+| Base Continuous trajectory, where $Sh = 1$                  | $\phi_{Sh,f}(x)$                               | $`X_t = \alpha_t X_0 + \beta_t X_1 \forall t \in [0,1] = X_0 + \int_0^t v(s, X_s) ds`$          |
 | Base velocity field $v_B(t, x)$                             | $f$                                            | $`v_B(t, x) \approx \dot{X}_t`$                                                                 |
 | Perturbed velocity field $v_P(t, x)$                        | $f_h$                                          |                                                                                                 |
-| Base Euler sampling trajectory $`\hat{X}_{t_k}^{B, Euler}`$ | $(\Phi_{h,f})^S(x)$                            | $`\hat{X}_{t_k}^{B, Euler} = X_0 + \Delta t \sum_{k=0}^{N-1} v_B(t_k, x)`$. $`t_k \Delta t = t`$|
-| Perturbed Euler $`\hat{X}_{t_k}^{P, Euler}`$                | $(\Phi_{h,f_h})^S(x)$                          | $`\hat{X}_{t_k}^{P, Euler} = X_0 + \Delta t \sum_{k=0}^{N-1} v_P(t_k, x)`$.                     |
+| Base Euler sampling trajectory $`\hat{X}_{t_k}^{B, Euler}`$ | $(\Phi_{h,f})^S(x)$                            | $`\hat{X}_{t_k}^{B, Euler} = X_0 + \Delta t \sum_{k=0}^{N-1} v_B(t_k, x)`$                      |
+| Perturbed Euler $`\hat{X}_{t_k}^{P, Euler}`$                | $(\Phi_{h,f_h})^S(x)$                          | $`\hat{X}_{t_k}^{P, Euler} = X_0 + \Delta t \sum_{k=0}^{N-1} v_P(t_k, x)`$                      |
 | End point discretisation error of Base model $`e_B^{disc}`$ | $(\Phi_{h,f})^S(x) - \phi_{Sh,f}(x)$           | $`e_B^{disc} = \hat{X}_1^{Euler, B} - X_1`$                                                     |
 | End point discretisation error counteraction $d_N$          | $(\Phi_{h,f_h})^S(x) - (\Phi_{h,f})^S(x)$      | $`d_N = \hat{X}_{t_N}^{Euler, P} - \hat{X}_{t_N}^{Euler, B}`$                                   |
 
