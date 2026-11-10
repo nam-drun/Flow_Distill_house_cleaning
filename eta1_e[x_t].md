@@ -1,3 +1,0 @@
-# Baseline for experiments
-
-Following JiT, we adopt the manifold hypothesis, which posits that clean images concentrate near a low-dimensional manifold embedded in a high-dimensional ambient space. Building upon JiT's two-dimensional toy setting, we construct a multimodal distribution supported on a nonlinear manifold of intrinsic dimension 170 embedded in \(\mathbb{R}^d\). Unlike the original linear embedding, our construction preserves full-rank ambient covariance while maintaining low intrinsic dimensionality. (Chat gpt nailed the writing, but this needs to be refined. WILL DO IT, will look into "intrinsic dimension" term, ie, how JiT states "clean" images are just low dim manifold with noise on top of it)
