@@ -12,4 +12,4 @@ Let's start from the latest, broadest practical view. Current SOTA in image gene
 
 In our opinion, we think that it is likely that FD/KL loss are basically a cheap version of RLHF. Like say if practitioners want to skip step (2) and (3) above, they can just straight up use pretrained Flow Matching with FD/KL loss. In this work, we work in 2 aspects. First, we do some "house cleaning" on previous distillation works and gained some more quality with respects to them despite having a simpler pipeline - you can already see the result below. Second, we relate Flow Matching + FD/KL loss line-of-work to low Matching + distillation + MDP + RLHF pipeline to show that Flow Matching + FD/KL is a cheap training alternative if practitioners don't want to go the long route.
 
-[!image](https://github.com/nam-drun/Flow_plus_Distribution-Matching-loss/blob/main/initial-experiment-result.png)
+![result below](https://github.com/nam-drun/Flow_plus_Distribution-Matching-loss/blob/main/initial-experiment-result.png)
