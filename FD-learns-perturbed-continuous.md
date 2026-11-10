@@ -1,4 +1,0 @@
-# Outline
-Theorem 3.2 in [IMDE paper](https://arxiv.org/abs/2206.07335) implies that there exists a small set of Perturbed Continuous in which their corresponding Perturbed Euler (or any other solver) could produce an endpoint $\hat{X}_1$ that is closer to ideal $X_1$ more than the end point of Base Euler. In other words, theorem 3.2 shows us how it is possible to counteract discretisation error while simultaneously learning a worse velocity field (from Flow Matching's standard). Now, we will show that despite its simplicity, Fréchet distance can perform this feat.
-
-First, we will set the endpoint for Base Continuous to be the ideal $X_1$ and use the formula provided by theorem 3.2 to locate the endpoint of Base Euler. This is only doable because theorem 3.2 makes an assumption on the direction and the displacement of discretisation error?
