@@ -6,5 +6,5 @@ To save compute but not compromising the method, we decide to simplify the probl
 So, here are the trends that our modified Wasserstein-2 manages to identify:
 1. Flow + Distillation is superior than Flow + FD loss (at least in 3D generation). We don't include 3D generation result here because we already included in our upcoming CVPR paper.
 2. Flow + Distillation with 6 sampling steps is near identical quality as pretrained Flow quality with 250 sampling steps (only $`~0.06`$ difference). This matches the common sense about the current SOTA in Flow Matching. You can see this in the screenshot below
-3. Flow + Distillation + FD loss can outperform Flow + Distillation in 2 sampling steps. Even with 2 sampling steps, Flow + Distillation + FD loss with 2 sampling steps is only $`~0.60`$ difference from pretrained Flow with 250 sampling steps. You can see this with `.csv` 
+3. Flow + Distillation + FD loss can outperform Flow + Distillation in 2 sampling steps. Even with 2 sampling steps, Flow + Distillation + FD loss with 2 sampling steps is only $`~0.60`$ difference from pretrained Flow with 250 sampling steps. You can see this with `factorial-fd-stage2.csv` 
 
